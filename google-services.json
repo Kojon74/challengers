@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "968327885385",
+    "project_id": "challengers-fab2d",
+    "storage_bucket": "challengers-fab2d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968327885385:android:9f7cd7cdeabf15f2188598",
+        "android_client_info": {
+          "package_name": "com.challengers.cha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARdC6_4SOmJGk-mrFVe6_iFREjeb31MbM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
