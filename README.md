@@ -9,7 +9,7 @@ Follow these steps to set up and run the project locally:
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/)
-- [Yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/)
+- [npm](https://www.npmjs.com/)
 - [Expo CLI](https://docs.expo.dev/get-started/installation/)
 - Xcode (for iOS)
 - Android Studio (for Android)
@@ -18,7 +18,7 @@ Follow these steps to set up and run the project locally:
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/challengers.git
+    git clone https://github.com/Kojon74/challengers.git
     cd challengers
     ```
 
@@ -29,6 +29,7 @@ Follow these steps to set up and run the project locally:
 
 3. **Run Expo Prebuild:**
     This step generates the native iOS and Android projects. The `--clean` option ensures the `ios/` and `android/` directories are deleted before they are regenerated.
+    This needs to be run every time there is a change made in the native code.
     ```bash
     npx expo prebuild --clean
     ```
