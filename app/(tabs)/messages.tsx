@@ -1,10 +1,10 @@
 import { SafeAreaView, StyleSheet } from "react-native";
 import { Text } from "../../components/Themed";
 
-export default function index() {
+export default function Messages() {
   return (
     <SafeAreaView>
-      <Text style={{ color: "white" }}>Search</Text>
+      <Text style={{ color: "white" }}>Messages</Text>
     </SafeAreaView>
   );
 }
