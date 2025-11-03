@@ -1,14 +1,15 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
 import ScreenContainer from "@/components/ScreenContainer";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import BodyText from "@/components/typography/BodyText";
 import { colours } from "@/theme/colours";
+import { useSession } from "@/ctx";
 
 const Settings = () => {
+  const { signOut } = useSession();
   return (
     <ScreenContainer>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={signOut}>
         <FontAwesome
           size={28}
           name="sign-out"

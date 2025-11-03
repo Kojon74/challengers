@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { useState } from "react";
 import Button from "@/components/Button";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import BodyText from "@/components/typography/BodyText";
 import ScreenContainer from "@/components/ScreenContainer";
@@ -11,7 +11,6 @@ import { useSession } from "@/ctx";
 const EmailAuth = () => {
   const { mode } = useLocalSearchParams<{ mode: "signup" | "login" }>();
   const { signIn, signUp } = useSession();
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -24,8 +23,6 @@ const EmailAuth = () => {
       } else if (mode === "login") {
         await signIn(email, password);
       }
-      // Navigate to the app after successful authentication
-      router.replace("/(app)/(tabs)");
     } catch (error) {
       const firebaseError = error as FirebaseAuthTypes.NativeFirebaseAuthError;
 

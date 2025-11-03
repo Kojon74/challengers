@@ -32,7 +32,17 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const { user } = useSession();
+  const { user, isOnboardingComplete, isLoading, isLoadingOnboarding } =
+    useSession();
+
+  // Show nothing while loading
+  if (isLoading || isLoadingOnboarding) {
+    return null;
+  }
+
+  const isAuthenticated = !!user;
+  const shouldShowOnboarding = isAuthenticated && !isOnboardingComplete;
+  const shouldShowApp = isAuthenticated && isOnboardingComplete;
 
   return (
     <Stack
@@ -42,11 +52,18 @@ function RootLayoutNav() {
         headerBackground: HeaderBackground,
       }}
     >
-      <Stack.Protected guard={!!user}>
+      {/* Protected: Only show app if authenticated AND onboarding complete */}
+      <Stack.Protected guard={shouldShowApp}>
         <Stack.Screen name="(app)" options={{ headerShown: false }} />
       </Stack.Protected>
 
-      <Stack.Protected guard={!user}>
+      {/* Protected: Only show onboarding if authenticated BUT onboarding not complete */}
+      <Stack.Protected guard={shouldShowOnboarding}>
+        <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+      </Stack.Protected>
+
+      {/* Protected: Only show auth screens if NOT authenticated */}
+      <Stack.Protected guard={!isAuthenticated}>
         <Stack.Screen
           name="index"
           options={{ headerTransparent: true, headerTitle: "" }}

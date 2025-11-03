@@ -3,9 +3,19 @@ import React from "react";
 import { colours } from "@/theme/colours";
 
 type ButtonType = "primary" | "secondary";
-type Props = { title: string; onPress: () => void; type?: ButtonType };
+type Props = {
+  title: string;
+  onPress: () => void;
+  type?: ButtonType;
+  disabled?: boolean;
+};
 
-const Button = ({ title, onPress, type = "primary" }: Props) => {
+const Button = ({
+  title,
+  onPress,
+  type = "primary",
+  disabled = false,
+}: Props) => {
   const getButtonStyle = () => {
     switch (type) {
       case "primary":
@@ -30,10 +40,20 @@ const Button = ({ title, onPress, type = "primary" }: Props) => {
 
   return (
     <TouchableOpacity
-      style={[styles.button, getButtonStyle()]}
+      style={[
+        styles.button,
+        getButtonStyle(),
+        disabled && styles.disabledButton,
+      ]}
       onPress={onPress}
+      disabled={disabled}
+      activeOpacity={0.7}
     >
-      <Text style={[styles.text, getTextStyle()]}>{title}</Text>
+      <Text
+        style={[styles.text, getTextStyle(), disabled && styles.disabledText]}
+      >
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -65,5 +85,12 @@ const styles = StyleSheet.create({
   },
   secondaryText: {
     color: colours.charcoal,
+  },
+  disabledButton: {
+    backgroundColor: colours.lightGray,
+    opacity: 0.6,
+  },
+  disabledText: {
+    color: colours.white,
   },
 });
