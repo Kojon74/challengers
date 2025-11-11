@@ -8,7 +8,7 @@ import {
 import { LocationObject } from "expo-location";
 import { doc, getFirestore, updateDoc } from "@react-native-firebase/firestore";
 import { getAuth } from "@react-native-firebase/auth";
-import { useSession } from "@/ctx";
+import { useSession } from "@/contexts/ctx";
 
 interface OnboardingData {
   firstName?: string;

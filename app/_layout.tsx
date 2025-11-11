@@ -1,28 +1,12 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import { useEffect } from "react";
 import { colours } from "@/theme/colours";
-import { SessionProvider, useSession } from "@/ctx";
-import { SplashScreenController } from "@/splash";
+import { SessionProvider, useSession } from "@/contexts/ctx";
+import { SplashScreenController } from "@/app/splash";
 import HeaderBackground from "@/components/HeaderBackground";
 
 export { ErrorBoundary } from "expo-router";
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-    ...FontAwesome.font,
-  });
-
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
     <SessionProvider>
       <SplashScreenController />

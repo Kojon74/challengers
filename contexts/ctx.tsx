@@ -22,13 +22,14 @@ import {
   getFirestore,
   setDoc,
 } from "@react-native-firebase/firestore";
-import { useStorageState } from "./useStorageState";
+import { useStorageState } from "../hooks/useStorageState";
 
 const AuthContext = createContext<{
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => void;
   user?: FirebaseAuthTypes.User | null;
+  userDoc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null;
   isLoading: boolean;
   isOnboardingComplete: boolean;
   isLoadingOnboarding: boolean;
@@ -38,6 +39,7 @@ const AuthContext = createContext<{
   signUp: async () => {},
   signOut: () => null,
   user: null,
+  userDoc: null,
   isLoading: false,
   isOnboardingComplete: false,
   isLoadingOnboarding: false,
@@ -62,6 +64,10 @@ export function SessionProvider({ children }: PropsWithChildren) {
     useState<
       FirebaseFirestoreTypes.DocumentReference<FirebaseFirestoreTypes.DocumentData>
     >();
+  const [userDoc, setUserDoc] =
+    useState<FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null>(
+      null
+    );
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {
@@ -70,8 +76,9 @@ export function SessionProvider({ children }: PropsWithChildren) {
         setSession(user.uid);
         const _userDocRef = doc(getFirestore(), "users", user.uid);
         try {
-          const userDoc = await getDoc(_userDocRef);
-          setIsOnboardingComplete(!!userDoc.get("onboardingComplete"));
+          const _userDoc = await getDoc(_userDocRef);
+          setUserDoc(_userDoc);
+          setIsOnboardingComplete(!!_userDoc.get("onboardingComplete"));
           setIsLoadingOnboarding(false);
         } catch (error) {
           console.error(error);
@@ -111,6 +118,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
           signOut(getAuth());
         },
         user: session ? getAuth().currentUser : null,
+        userDoc,
         isLoading,
         isOnboardingComplete,
         isLoadingOnboarding,

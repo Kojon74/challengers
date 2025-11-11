@@ -2,7 +2,13 @@ import RatingTab from "@/components/RatingTab";
 import { colours } from "@/theme/colours";
 import { useState } from "react";
 import { StyleSheet, useWindowDimensions } from "react-native";
-import { SceneMap, TabBar, TabView } from "react-native-tab-view";
+import {
+  Route,
+  SceneMap,
+  TabBar,
+  TabBarProps,
+  TabView,
+} from "react-native-tab-view";
 
 const renderScene = SceneMap({
   strokes: RatingTab,
@@ -18,7 +24,7 @@ const routes = [
   { key: "serve", title: "Serve" },
 ];
 
-const renderTabBar = (props) => (
+const renderTabBar = (props: TabBarProps<Route>) => (
   <TabBar
     {...props}
     indicatorStyle={{ backgroundColor: colours.charcoal }}

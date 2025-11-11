@@ -6,7 +6,7 @@ import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import BodyText from "@/components/typography/BodyText";
 import ScreenContainer from "@/components/ScreenContainer";
 import TextInput from "@/components/TextInput";
-import { useSession } from "@/ctx";
+import { useSession } from "@/contexts/ctx";
 
 const EmailAuth = () => {
   const { mode } = useLocalSearchParams<{ mode: "signup" | "login" }>();
