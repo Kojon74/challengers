@@ -20,7 +20,7 @@ export default function OnboardingLayout() {
           }}
         />
         <Stack.Screen
-          name="level"
+          name="rating"
           options={{
             title: "",
           }}

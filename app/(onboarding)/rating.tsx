@@ -8,19 +8,19 @@ import { colours } from "@/theme/colours";
 import { Picker } from "@react-native-picker/picker";
 import { useOnboarding } from "@/contexts/OnboardingContext";
 
-const skillLevels = {
-  "1.0": "1.0 - Just starting",
-  "1.5": "1.5 - Can play but lacks consistency",
-  "2.0": "2.0 - Basic rallies, inconsistent",
-  "2.5": "2.5 - Consistent 10+ ball rallies",
-  "3.0": "3.0 - Steady forehand and backhand",
-  "3.5": "3.5 - Can move opponents around",
-  "4.0": "4.0 - Strategic point development",
-  "4.5": "4.5 - Beginning advanced player",
-  "5.0": "5.0 - Competitive player",
-  "5.5": "5.5 - Tournament ready",
-  "6.0 - 7.0": "6.0 - 7.0 - Provincial/National level",
-};
+const ratings = [
+  "1.0",
+  "1.5",
+  "2.0",
+  "2.5",
+  "3.0",
+  "3.5",
+  "4.0",
+  "4.5",
+  "5.0",
+  "5.5",
+  "6.0+",
+];
 
 export default function LevelSelection() {
   const router = useRouter();
@@ -33,15 +33,15 @@ export default function LevelSelection() {
   return (
     <ScreenContainer style={styles.container}>
       <View>
-        <Heading>What's your tennis skill level?</Heading>
+        <Heading>What's your tennis rating?</Heading>
         <BodyText>
-          Select your level based on the Play Tennis Self-Rating Guide.
+          Select your rating based on the Play Tennis Self-Rating Guide.
         </BodyText>
         <Picker
-          selectedValue={data.skillLevel}
-          onValueChange={(itemValue) => updateData({ skillLevel: itemValue })}
+          selectedValue={data.rating}
+          onValueChange={(itemValue) => updateData({ rating: itemValue })}
         >
-          {Object.entries(skillLevels).map(([key, value]) => (
+          {Object.entries(ratings).map(([key, value]) => (
             <Picker.Item key={key} label={value} value={key} />
           ))}
         </Picker>

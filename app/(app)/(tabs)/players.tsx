@@ -1,39 +1,54 @@
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import ScreenContainer from "@/components/ScreenContainer";
-import { players } from "@/players";
 import BodyText from "@/components/typography/BodyText";
-
-type Player = {
-  name: string;
-  rating: number;
-  distance: number;
-};
-
-type TableHeader = {
-  name: string;
-  rating: string;
-  distance: string;
-};
+import { router } from "expo-router";
+import { usePlayers } from "@/contexts/PlayerContext";
+import { useSession } from "@/contexts/ctx";
+import { Player } from "@/types/player";
 
 const Players = () => {
+  const { players } = usePlayers();
+  const { userDoc } = useSession();
+
+  const playersList = Object.values(players).filter(
+    (player) => player.id !== userDoc?.id
+  );
+
   return (
     <ScreenContainer>
       <FlatList
-        data={players}
+        data={playersList}
         renderItem={({ item }) => <PlayerRow {...item} />}
-        ListHeaderComponent={
-          <PlayerRow name="Name" rating="Rating" distance="Distance" />
-        }
+        ListHeaderComponent={<HeaderRow />}
       />
     </ScreenContainer>
   );
 };
 
-const PlayerRow = ({ name, rating, distance }: Player | TableHeader) => (
-  <TouchableOpacity style={styles.rowContainer}>
-    <BodyText style={styles.playerCol1}>{name}</BodyText>
+const HeaderRow = () => (
+  <View style={styles.rowContainer}>
+    <BodyText style={styles.playerCol1}>Name</BodyText>
+    <BodyText style={styles.playerCol2}>Rating</BodyText>
+    <BodyText style={styles.playerCol2}>Distance</BodyText>
+  </View>
+);
+
+const PlayerRow = ({ id, firstName, lastName, rating, location }: Player) => (
+  <TouchableOpacity
+    style={styles.rowContainer}
+    onPress={() => router.navigate(`/(app)/player/${id}`)}
+  >
+    <BodyText style={styles.playerCol1}>{`${firstName} ${lastName}`}</BodyText>
     <BodyText style={styles.playerCol2}>{rating}</BodyText>
-    <BodyText style={styles.playerCol2}>{distance}</BodyText>
+    <BodyText style={styles.playerCol2}>
+      {location.coords.latitude}, {location.coords.longitude}
+    </BodyText>
   </TouchableOpacity>
 );
 
