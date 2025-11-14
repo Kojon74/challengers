@@ -20,7 +20,7 @@ export default function OnboardingStep1() {
     if (!data.firstName)
       setError((prev) => ({ ...prev, firstName: "Required" }));
     if (!data.lastName) setError((prev) => ({ ...prev, lastName: "Required" }));
-    if (data.firstName && data.lastName) router.push("/(onboarding)/level");
+    if (data.firstName && data.lastName) router.push("/(onboarding)/rating");
   };
 
   return (

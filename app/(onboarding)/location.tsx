@@ -7,8 +7,20 @@ import BodyText from "@/components/typography/BodyText";
 import {
   getCurrentPositionAsync,
   requestForegroundPermissionsAsync,
+  reverseGeocodeAsync,
 } from "expo-location";
 import { useOnboarding } from "@/contexts/OnboardingContext";
+
+async function fetchNeighbourhood(lat: number, lon: number) {
+  const results = await reverseGeocodeAsync({ latitude: lat, longitude: lon });
+  if (results.length > 0) {
+    const place = results[0];
+    return (
+      place.district || place.city || place.subregion || place.region || ""
+    );
+  }
+  return "";
+}
 
 export default function LocationSelection() {
   const { updateData, completeOnboarding } = useOnboarding();
@@ -23,7 +35,11 @@ export default function LocationSelection() {
     }
 
     const location = await getCurrentPositionAsync({});
-    updateData({ location });
+    const neighbourhood = await fetchNeighbourhood(
+      location.coords.latitude,
+      location.coords.longitude
+    );
+    updateData({ location: { ...location, neighbourhood } });
   };
 
   const handleComplete = async () => {

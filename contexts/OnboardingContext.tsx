@@ -5,21 +5,14 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-import { LocationObject } from "expo-location";
 import { doc, getFirestore, updateDoc } from "@react-native-firebase/firestore";
 import { getAuth } from "@react-native-firebase/auth";
 import { useSession } from "@/contexts/ctx";
-
-interface OnboardingData {
-  firstName?: string;
-  lastName?: string;
-  skillLevel?: string;
-  location?: LocationObject;
-}
+import { Player } from "@/types/player";
 
 interface OnboardingContextType {
-  data: OnboardingData;
-  updateData: (updates: Partial<OnboardingData>) => void;
+  data: Partial<Player>;
+  updateData: (updates: Partial<Player>) => void;
   clearData: () => void;
   completeOnboarding: () => Promise<void>;
 }
@@ -39,9 +32,9 @@ export function useOnboarding() {
 export function OnboardingProvider({ children }: PropsWithChildren) {
   const { setIsOnboardingComplete } = useSession();
 
-  const [data, setData] = useState<OnboardingData>({ skillLevel: "1.0" });
+  const [data, setData] = useState<Partial<Player>>({});
 
-  const updateData = (updates: Partial<OnboardingData>) => {
+  const updateData = (updates: Partial<Player>) => {
     setData((prev) => ({ ...prev, ...updates }));
   };
 
