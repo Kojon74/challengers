@@ -23,13 +23,14 @@ import {
   setDoc,
 } from "@react-native-firebase/firestore";
 import { useStorageState } from "../hooks/useStorageState";
+import { UserType } from "@/types/user";
 
 const AuthContext = createContext<{
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => void;
   user?: FirebaseAuthTypes.User | null;
-  userDoc: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null;
+  userData: UserType | null;
   isLoading: boolean;
   isOnboardingComplete: boolean;
   isLoadingOnboarding: boolean;
@@ -39,35 +40,20 @@ const AuthContext = createContext<{
   signUp: async () => {},
   signOut: () => null,
   user: null,
-  userDoc: null,
+  userData: null,
   isLoading: false,
   isOnboardingComplete: false,
   isLoadingOnboarding: false,
   setIsOnboardingComplete: () => {},
 });
 
-// Use this hook to access the user info.
-export function useSession() {
-  const value = use(AuthContext);
-  if (!value) {
-    throw new Error("useSession must be wrapped in a <SessionProvider />");
-  }
-
-  return value;
-}
+export const useSession = () => use(AuthContext);
 
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
   const [isLoadingOnboarding, setIsLoadingOnboarding] = useState(true);
-  const [userDocRef, setUserDocRef] =
-    useState<
-      FirebaseFirestoreTypes.DocumentReference<FirebaseFirestoreTypes.DocumentData>
-    >();
-  const [userDoc, setUserDoc] =
-    useState<FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null>(
-      null
-    );
+  const [userData, setUserData] = useState<UserType | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {
@@ -76,9 +62,9 @@ export function SessionProvider({ children }: PropsWithChildren) {
         setSession(user.uid);
         const _userDocRef = doc(getFirestore(), "users", user.uid);
         try {
-          const _userDoc = await getDoc(_userDocRef);
-          setUserDoc(_userDoc);
-          setIsOnboardingComplete(!!_userDoc.get("onboardingComplete"));
+          const userDoc = await getDoc(_userDocRef);
+          setUserData({ ...(userDoc.data() as UserType), id: userDoc.id });
+          setIsOnboardingComplete(!!userDoc.get("onboardingComplete"));
           setIsLoadingOnboarding(false);
         } catch (error) {
           console.error(error);
@@ -106,19 +92,18 @@ export function SessionProvider({ children }: PropsWithChildren) {
             email,
             password
           );
-          const _userDocRef = doc(
+          const userDocRef = doc(
             getFirestore(),
             "users",
             userCredential.user.uid
           );
-          await setDoc(_userDocRef, {});
-          setUserDocRef(_userDocRef);
+          await setDoc(userDocRef, {});
         },
         signOut: () => {
           signOut(getAuth());
         },
         user: session ? getAuth().currentUser : null,
-        userDoc,
+        userData,
         isLoading,
         isOnboardingComplete,
         isLoadingOnboarding,

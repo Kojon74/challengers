@@ -1,23 +1,17 @@
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import ScreenContainer from "@/components/ScreenContainer";
 import BodyText from "@/components/typography/BodyText";
 import { router } from "expo-router";
 import { usePlayers } from "@/contexts/PlayerContext";
-import { useSession } from "@/contexts/ctx";
-import { Player } from "@/types/player";
+import { UserType } from "@/types/user";
+import useAuthenticatedSession from "@/hooks/useAuthenticatedSession";
 
 const Players = () => {
   const { players } = usePlayers();
-  const { userDoc } = useSession();
+  const { userData } = useAuthenticatedSession();
 
   const playersList = Object.values(players).filter(
-    (player) => player.id !== userDoc?.id
+    (player) => player.id !== userData.id
   );
 
   return (
@@ -39,7 +33,7 @@ const HeaderRow = () => (
   </View>
 );
 
-const PlayerRow = ({ id, firstName, lastName, rating, location }: Player) => (
+const PlayerRow = ({ id, firstName, lastName, rating, location }: UserType) => (
   <TouchableOpacity
     style={styles.rowContainer}
     onPress={() => router.navigate(`/(app)/player/${id}`)}

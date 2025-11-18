@@ -1,6 +1,6 @@
 import { LocationObject } from "expo-location";
 
-export type Player = {
+export type UserType = {
   id: string;
   firstName: string;
   lastName: string;

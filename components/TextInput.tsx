@@ -28,7 +28,7 @@ const TextInput = ({ style, error, ...props }: Props) => {
 
 export default TextInput;
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
   },

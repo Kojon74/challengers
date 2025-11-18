@@ -16,6 +16,7 @@ export default function AppLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="settings" options={{ title: "Settings" }} />
         <Stack.Screen name="player/[id]" options={{ title: "" }} />
+        <Stack.Screen name="chat/[id]" options={{ title: "Chat" }} />
       </Stack>
     </PlayerProvider>
   );

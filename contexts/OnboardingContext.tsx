@@ -7,12 +7,12 @@ import {
 } from "react";
 import { doc, getFirestore, updateDoc } from "@react-native-firebase/firestore";
 import { getAuth } from "@react-native-firebase/auth";
-import { useSession } from "@/contexts/ctx";
-import { Player } from "@/types/player";
+import { useSession } from "@/contexts/SessionContext";
+import { UserType } from "@/types/user";
 
 interface OnboardingContextType {
-  data: Partial<Player>;
-  updateData: (updates: Partial<Player>) => void;
+  data: Partial<UserType>;
+  updateData: (updates: Partial<UserType>) => void;
   clearData: () => void;
   completeOnboarding: () => Promise<void>;
 }
@@ -32,9 +32,9 @@ export function useOnboarding() {
 export function OnboardingProvider({ children }: PropsWithChildren) {
   const { setIsOnboardingComplete } = useSession();
 
-  const [data, setData] = useState<Partial<Player>>({});
+  const [data, setData] = useState<Partial<UserType>>({});
 
-  const updateData = (updates: Partial<Player>) => {
+  const updateData = (updates: Partial<UserType>) => {
     setData((prev) => ({ ...prev, ...updates }));
   };
 
