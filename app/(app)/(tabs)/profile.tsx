@@ -1,13 +1,12 @@
-import { useSession } from "@/contexts/ctx";
 import PlayerProfile from "@/components/PlayerProfile";
-import { userDocToPlayer } from "@/utils/players";
+import useAuthenticatedSession from "@/hooks/useAuthenticatedSession";
 
 const Profile = () => {
-  const { userDoc } = useSession();
+  const { userData } = useAuthenticatedSession();
 
-  if (!userDoc) return null;
+  if (!userData) return null;
 
-  return <PlayerProfile player={userDocToPlayer(userDoc)} />;
+  return <PlayerProfile player={userData} />;
 };
 
 export default Profile;

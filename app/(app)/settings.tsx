@@ -3,7 +3,7 @@ import ScreenContainer from "@/components/ScreenContainer";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import BodyText from "@/components/typography/BodyText";
 import { colours } from "@/theme/colours";
-import { useSession } from "@/contexts/ctx";
+import { useSession } from "@/contexts/SessionContext";
 
 const Settings = () => {
   const { signOut } = useSession();

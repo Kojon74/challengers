@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 import { colours } from "@/theme/colours";
-import { SessionProvider, useSession } from "@/contexts/ctx";
+import { SessionProvider, useSession } from "@/contexts/SessionContext";
 import { SplashScreenController } from "@/app/splash";
 import HeaderBackground from "@/components/HeaderBackground";
 
