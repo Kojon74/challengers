@@ -2,7 +2,7 @@ import ScreenContainer from "@/components/ScreenContainer";
 import BodyText from "@/components/typography/BodyText";
 import Heading from "@/components/typography/Heading";
 import { colours } from "@/theme/colours";
-import { UserType } from "@/types/user";
+import { UserDocType } from "@/types/user";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   addDoc,
@@ -12,6 +12,7 @@ import {
   getDocs,
   getFirestore,
   query,
+  serverTimestamp,
   setDoc,
   where,
 } from "@react-native-firebase/firestore";
@@ -20,7 +21,7 @@ import { StyleSheet, View } from "react-native";
 import Button from "./Button";
 import useAuthenticatedSession from "@/hooks/useAuthenticatedSession";
 
-type Props = { player: UserType };
+type Props = { player: UserDocType };
 
 const PlayerProfile = ({ player }: Props) => {
   const { userData } = useAuthenticatedSession();
@@ -33,7 +34,7 @@ const PlayerProfile = ({ player }: Props) => {
       await setDoc(doc(getFirestore(), `chats/${chatId}`), {
         participants: [player.id, userData.id],
         lastMessage: "",
-        lastMessageTime: Date.now(),
+        lastMessageTime: serverTimestamp(),
       });
     router.navigate(`/chat/${chatId}`);
   };

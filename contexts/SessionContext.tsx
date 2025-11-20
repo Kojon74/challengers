@@ -23,14 +23,14 @@ import {
   setDoc,
 } from "@react-native-firebase/firestore";
 import { useStorageState } from "../hooks/useStorageState";
-import { UserType } from "@/types/user";
+import { UserDocType } from "@/types/user";
 
 const AuthContext = createContext<{
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => void;
   user?: FirebaseAuthTypes.User | null;
-  userData: UserType | null;
+  userData: UserDocType | null;
   isLoading: boolean;
   isOnboardingComplete: boolean;
   isLoadingOnboarding: boolean;
@@ -53,7 +53,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
   const [isLoadingOnboarding, setIsLoadingOnboarding] = useState(true);
-  const [userData, setUserData] = useState<UserType | null>(null);
+  const [userData, setUserData] = useState<UserDocType | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(getAuth(), async (user) => {
@@ -63,7 +63,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
         const _userDocRef = doc(getFirestore(), "users", user.uid);
         try {
           const userDoc = await getDoc(_userDocRef);
-          setUserData({ ...(userDoc.data() as UserType), id: userDoc.id });
+          setUserData({ ...(userDoc.data() as UserDocType), id: userDoc.id });
           setIsOnboardingComplete(!!userDoc.get("onboardingComplete"));
           setIsLoadingOnboarding(false);
         } catch (error) {

@@ -3,7 +3,7 @@ import ScreenContainer from "@/components/ScreenContainer";
 import BodyText from "@/components/typography/BodyText";
 import { router } from "expo-router";
 import { usePlayers } from "@/contexts/PlayerContext";
-import { UserType } from "@/types/user";
+import { UserDocType } from "@/types/user";
 import useAuthenticatedSession from "@/hooks/useAuthenticatedSession";
 
 const Players = () => {
@@ -33,7 +33,13 @@ const HeaderRow = () => (
   </View>
 );
 
-const PlayerRow = ({ id, firstName, lastName, rating, location }: UserType) => (
+const PlayerRow = ({
+  id,
+  firstName,
+  lastName,
+  rating,
+  location,
+}: UserDocType) => (
   <TouchableOpacity
     style={styles.rowContainer}
     onPress={() => router.navigate(`/(app)/player/${id}`)}

@@ -8,11 +8,11 @@ import {
 import { doc, getFirestore, updateDoc } from "@react-native-firebase/firestore";
 import { getAuth } from "@react-native-firebase/auth";
 import { useSession } from "@/contexts/SessionContext";
-import { UserType } from "@/types/user";
+import { UserDocType } from "@/types/user";
 
 interface OnboardingContextType {
-  data: Partial<UserType>;
-  updateData: (updates: Partial<UserType>) => void;
+  data: Partial<UserDocType>;
+  updateData: (updates: Partial<UserDocType>) => void;
   clearData: () => void;
   completeOnboarding: () => Promise<void>;
 }
@@ -32,9 +32,9 @@ export function useOnboarding() {
 export function OnboardingProvider({ children }: PropsWithChildren) {
   const { setIsOnboardingComplete } = useSession();
 
-  const [data, setData] = useState<Partial<UserType>>({});
+  const [data, setData] = useState<Partial<UserDocType>>({});
 
-  const updateData = (updates: Partial<UserType>) => {
+  const updateData = (updates: Partial<UserDocType>) => {
     setData((prev) => ({ ...prev, ...updates }));
   };
 

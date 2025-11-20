@@ -1,4 +1,4 @@
-import { UserType } from "@/types/user";
+import { UserDocType } from "@/types/user";
 import {
   collection,
   FirebaseFirestoreTypes,
@@ -13,12 +13,14 @@ import {
   useState,
 } from "react";
 
-const PlayerContext = createContext<{ players: { [id: string]: UserType } }>({
-  players: {},
-});
+const PlayerContext = createContext<{ players: { [id: string]: UserDocType } }>(
+  {
+    players: {},
+  }
+);
 
 export const PlayerProvider = ({ children }: PropsWithChildren) => {
-  const [players, setPlayers] = useState<{ [id: string]: UserType }>({});
+  const [players, setPlayers] = useState<{ [id: string]: UserDocType }>({});
 
   useEffect(() => {
     (async () => {
@@ -29,7 +31,7 @@ export const PlayerProvider = ({ children }: PropsWithChildren) => {
         Object.fromEntries(
           userDocs.docs.map((doc) => [
             doc.id,
-            { ...doc.data(), id: doc.id } as UserType,
+            { ...doc.data(), id: doc.id } as UserDocType,
           ])
         )
       );

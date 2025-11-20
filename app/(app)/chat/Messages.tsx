@@ -5,6 +5,8 @@ import {
   FirebaseFirestoreTypes,
   getFirestore,
   onSnapshot,
+  orderBy,
+  query,
 } from "@react-native-firebase/firestore";
 import Message from "./Message";
 import { type MessageType } from "@/types/chats";
@@ -17,17 +19,20 @@ const Messages = ({ id }: Props) => {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      collection(getFirestore(), `chats/${id}/messages`),
+      query(
+        collection(getFirestore(), `chats/${id}/messages`),
+        orderBy("timestamp")
+      ),
       (snap: FirebaseFirestoreTypes.QuerySnapshot) => {
         setMessages(
-          snap.docs.reverse().map((doc) => ({
+          snap.docs.map((doc) => ({
             ...(doc.data() as Omit<MessageType, "id">),
             id: doc.id,
           }))
         );
       }
     );
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {

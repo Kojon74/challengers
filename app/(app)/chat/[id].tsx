@@ -13,18 +13,12 @@ import {
   getDoc,
   getFirestore,
   serverTimestamp,
-  type Timestamp,
+  updateDoc,
 } from "@react-native-firebase/firestore";
-import { MessageType } from "@/types/chats";
+import { ChatDocType, MessageType } from "@/types/chats";
 import useAuthenticatedSession from "@/hooks/useAuthenticatedSession";
-import { UserType } from "@/types/user";
+import { UserDocType } from "@/types/user";
 import HeaderRightButton from "./HeaderRightButton";
-
-type ChatDoc = {
-  lastMessage: string;
-  lastMessageTime: Timestamp;
-  participants: string[];
-};
 
 const Chat = () => {
   const navigation = useNavigation();
@@ -35,7 +29,7 @@ const Chat = () => {
   useEffect(() => {
     (async () => {
       const chatDoc = await getDoc(doc(getFirestore(), `chats/${id}`));
-      const participants = (chatDoc.data() as ChatDoc).participants;
+      const participants = (chatDoc.data() as ChatDocType).participants;
       const otherUserId = participants.find((id) => id !== userData.id);
       if (!otherUserId) {
         console.error("User not included in chat participants list");
@@ -43,7 +37,7 @@ const Chat = () => {
       }
       const otherUser = (
         await getDoc(doc(getFirestore(), `users/${otherUserId}`))
-      ).data() as Omit<UserType, "id">;
+      ).data() as Omit<UserDocType, "id">;
       navigation.setOptions({
         title: `${otherUser.firstName} ${otherUser.lastName}`,
         headerRight: () => <HeaderRightButton />,
@@ -52,15 +46,18 @@ const Chat = () => {
   }, [id]);
 
   const handlePressSend = async () => {
+    const messageTime = serverTimestamp();
     const messageDocData: Omit<MessageType, "id"> = {
       senderId: userData.id,
       text: messageInput,
-      timestamp: serverTimestamp(),
+      timestamp: messageTime,
     };
-    await addDoc(
-      collection(getFirestore(), `chats/${id}/messages`),
-      messageDocData
-    );
+    addDoc(collection(getFirestore(), `chats/${id}/messages`), messageDocData);
+    updateDoc(doc(getFirestore(), `chats/${id}`), {
+      lastMessage: messageInput,
+      lastMessageTime: messageTime,
+    });
+
     setMessageInput("");
   };
 
