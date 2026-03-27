@@ -3,7 +3,7 @@ import ScreenContainer from "@/components/ScreenContainer";
 import BodyText from "@/components/typography/BodyText";
 import { router } from "expo-router";
 import { usePlayers } from "@/contexts/PlayerContext";
-import { UserDocType } from "@/types/user";
+import { PlayerType } from "@/types/user";
 import useAuthenticatedSession from "@/hooks/useAuthenticatedSession";
 
 const Players = () => {
@@ -38,17 +38,15 @@ const PlayerRow = ({
   firstName,
   lastName,
   rating,
-  location,
-}: UserDocType) => (
+  distance,
+}: PlayerType) => (
   <TouchableOpacity
     style={styles.rowContainer}
     onPress={() => router.navigate(`/(app)/player/${id}`)}
   >
     <BodyText style={styles.playerCol1}>{`${firstName} ${lastName}`}</BodyText>
     <BodyText style={styles.playerCol2}>{rating}</BodyText>
-    <BodyText style={styles.playerCol2}>
-      {location.coords.latitude}, {location.coords.longitude}
-    </BodyText>
+    <BodyText style={styles.playerCol2}>{distance} km</BodyText>
   </TouchableOpacity>
 );
 
